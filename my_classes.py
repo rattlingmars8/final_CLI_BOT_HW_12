@@ -149,32 +149,32 @@ class AddressBook(UserDict):
                 bday = record.bday
                 writer.writerow({'Name': name, 'Phones': phones, "B-day": bday})
     
-    def show_all(self) -> str:
-        n = 5
+    def show_all(self, n) -> str:
+        # n = 5
         total_rec = len(self.data.keys())
-        if total_rec > 10:
-            total_pages = (total_rec + n - 1) // n
-            current_page = 1
-            while True:
-                try:
-                    print(f'Page {current_page} of {total_pages}:\n')
-                    for i, rec in enumerate(self.iterator(n) , (current_page - 1) * n + 1):
-                        print(f'{i}. {rec}\n')
-                    if current_page == total_pages:
-                        print("This is the final page.")
-                        self.index = 0
-                        break
-                    user_input = input("Enter anything co continue watching list or type 'exit' / 'stop' / 'close' for exit: ")
-                    if user_input in ['exit', 'stop', 'close']:
-                        self.index = 0
-                        break
-                    else:
-                        current_page +=1
-                except StopIteration:
+        # if total_rec > 10:
+        total_pages = (total_rec + n - 1) // n
+        current_page = 1
+        while True:
+            try:
+                print(f'Page {current_page} of {total_pages}:\n')
+                for i, rec in enumerate(self.iterator(n) , (current_page - 1) * n + 1):
+                    print(f'{i}. {rec}\n')
+                if current_page == total_pages:
+                    print("This is the final page.")
                     self.index = 0
                     break
-        else:
-            all_contacts = [record for _, record in self.items()]
-            for i, record in enumerate(all_contacts, 1):
-                print(f'{i}. {record}')
+                user_input = input("Enter anything co continue watching list or type 'exit' / 'stop' / 'close' for exit: ")
+                if user_input in ['exit', 'stop', 'close']:
+                    self.index = 0
+                    break
+                else:
+                    current_page +=1
+            except StopIteration:
+                self.index = 0
+                break
+        # else:
+        #     all_contacts = [record for _, record in self.items()]
+        #     for i, record in enumerate(all_contacts, 1):
+        #         print(f'{i}. {record}')
         return ""

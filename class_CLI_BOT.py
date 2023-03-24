@@ -34,7 +34,8 @@ def input_error(func):
         except KeyError:
             return "This contact doesn't exist in the phonebook."
         except ValueError:
-            return "Please enter correct phone number. Example: '+380123456789' or '0123456879'."
+            #return "Please enter correct phone number. Example: '+380123456789' or '0123456879'."
+            return "Please enter a valid value. Try again."
         except IndexError:
             return "Please enter valid name."
         except TypeError:
@@ -101,8 +102,13 @@ def add_contact(*args):
 
 @input_error
 def show_all(*args):
-    return contacts.show_all()
-    
+    if args[0]:
+        n = int(args[0])
+        return contacts.show_all(n)
+    for i, record in enumerate([record for _, record in contacts.items()], 1):
+        print(f'{i}. {record}')
+    return ""
+        
 @input_error
 def add_bday(*args):
     name = name_check(args[0])
@@ -190,8 +196,8 @@ def show_cont_phones(*args):
 def help(*args):
     return """
     'hello' -> Greeting the user: (Hi. How can I help you?).
-    'show all' -> Returns a list of all contacts. If there are more than 10 contacts in the list, returns a book of 5 contacts per page.
-    'add [name]* (phone)**' -> Adds a contact to the phone book.
+    'show all (number)**' -> Returns a list of all contacts. If there number in the command, returns a book of number contacts per page.
+    'add [name]* (phone)**' -> Adds a contact to the phone book. Example of phone format: '+3801234567890' or '0123456789'.
     'change phone [name]*' -> Allows the user to select the position of the phone number to replace from the proposed list of numbers that the selected contact has/if any.
     'append phone [name]*' -> Adds a phone number to the selected contact.
     'remove phone [name]*' -> Allows the user to select the position of the phone number to delete from the proposed list of numbers for the selected contact.
