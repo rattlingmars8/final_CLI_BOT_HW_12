@@ -74,7 +74,12 @@ class Phone(Field):
 class Record():
     def __init__(self, name:Name, phone:Phone=None, bday:Birthday = None):
         self.name = name
-        self.phones = [phone] if phone else []
+        if type(phone) == str:
+            self.phones = [phone]
+        elif type(phone) == list:
+            self.phones = [ph for ph in phone]
+        else:
+            self.phones = []
         self.bday = bday
 
     def add_phone(self, phone:Phone):
@@ -105,8 +110,8 @@ class Record():
     def change_phone(self, index: int, new_phone:Phone):
         self.phones[index] = new_phone
 
-    def __hash__(self):
-        return hash(self.name)
+    # def __hash__(self):
+    #     return hash(self.name)
 
     def __str__(self):
         res = ""

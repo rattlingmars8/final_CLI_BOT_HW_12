@@ -81,24 +81,35 @@ def hello(*args):
 
 # fnc to add a new contact to the phonebook
 @input_error
+# def add_contact(*args):
+#     name = Name(args[0]) 
+#     if name.value.strip() == "":
+#         return "Try again. Enter contact name you want to add."
+#     if name.value in contacts.keys():
+#         return "This contact already exists."
+#     else:
+#         if len(args) > 1:
+#             phone = Phone(args[1])
+#             record = Record(name, phone)
+#             contacts.add_record(record)
+#             contacts.write_csv()
+#             return f"{name.value} with {phone.value} has been added to the phonebook."
+#         else:
+#             record = Record(name)
+#             contacts.add_record(record)
+#             contacts.write_csv()
+#             return f"{name.value} has been added to the phonebook." 
 def add_contact(*args):
-    name = Name(args[0]) 
-    if name.value.strip() == "":
+    name = Name(args[0])
+    if not name.value.strip():
         return "Try again. Enter contact name you want to add."
-    if name.value in contacts.keys():
+    if name.value in contacts:
         return "This contact already exists."
-    else:
-        if len(args) > 1:
-            phone = Phone(args[1])
-            record = Record(name, phone)
-            contacts.add_record(record)
-            contacts.write_csv()
-            return f"{name.value} with {phone.value} has been added to the phonebook."
-        else:
-            record = Record(name)
-            contacts.add_record(record)
-            contacts.write_csv()
-            return f"{name.value} has been added to the phonebook." 
+    record = Record(name, [Phone(phone) for phone in args[1:]])
+    contacts.add_record(record)
+    contacts.write_csv()
+    return f"{name.value} with {', '.join(record.phones.value)} has been added to the phonebook." if args[1:] else f"{name.value} has been added to the phonebook."
+
 
 @input_error
 def show_all(*args):
